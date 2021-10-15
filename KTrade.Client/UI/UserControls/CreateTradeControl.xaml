@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="KTrade.Client.UI.UserControls.CreateDealControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KTrade.Client.UI.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <DockPanel>
+            <Label Content="Даю денег:"/>
+            <TextBox Text="{Binding GivingMoney}" FontWeight="Bold" FontSize="16" PreviewTextInput="PreviewDigitInput"/>
+        </DockPanel>
+        <DockPanel>
+            <Label Content="Хочу денег:"/>
+            <TextBox Text="{Binding AskingMoney}" FontWeight="Bold" FontSize="16" PreviewTextInput="PreviewDigitInput"/>
+        </DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Label Content="Даю ресурсы:"/>
+                <local:ResourcesAmountsEditableControl DataContext="{Binding GivenResources}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Label Content="Хочу ресурсы:"/>
+                <local:ResourcesAmountsEditableControl DataContext="{Binding AskingResources}"/>
+            </StackPanel>
+        </Grid>
+        <DockPanel>
+            <Label Content="Секунд до отмены"/>
+            <TextBox Text="{Binding TimeLeft}" FontWeight="Bold" FontSize="16" PreviewTextInput="PreviewDigitInput"/>
+        </DockPanel>
+        <Button Content="Разместить сделку" FontSize="16" Command="{Binding PlaceTradeCommand}"/>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,31 @@
+﻿<Window x:Class="KTrade.Client.UI.Windows.LobbyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KTrade.Client.UI.Windows"
+        mc:Ignorable="d"
+        Title="Подключение" Width="400" Height="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <RichTextBox Grid.Row="0">
+            <FlowDocument>
+                <Paragraph>Привет, дорогой друг!</Paragraph>
+                <Paragraph>Добро пожаловать в мою игру о торговле!</Paragraph>
+                <Paragraph>Свод правил.</Paragraph>
+                <Paragraph>
+                    В игре есть несколько типов ресурсов, их можно отличить по цвету. Ресурсы можно разделить на 3 группы по редкости.
+                    Игроки борятся между собой за ресурсы. Каждую минуту проводится аукцион. Игроки перед аукционом делают свои денежные взносы на каждый ресурс.
+                    Игра генерирует случайное количество каждого ресурса, ресурсы распределяются между игроками по принципу "кто больше вложил - тот больше получил."
+                    Игроки могут торговать между собой. Также иногда появляются заказы на производство ресурсов, за которые можно получить деньги.
+                    Выигрывает тот, кто первый наберет определенную сумму денег.
+                </Paragraph>
+                <Paragraph>Сложно? Ничего страшного, после первых 5 минут в игре все станет понятно!</Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button Grid.Row="1" Content="Поиск сервера" IsEnabled="False" x:Name="JoinButton"/>
+    </Grid>
+</Window>

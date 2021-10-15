@@ -1,0 +1,171 @@
+﻿<Window x:Class="KTrade.Client.UI.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KTrade.Client.UI.Windows"
+        xmlns:userControls="clr-namespace:KTrade.Client.UI.UserControls"
+        xmlns:converters="clr-namespace:KTrade.Client.UI.Converters"
+        mc:Ignorable="d"
+        Title="KTrade" Height="450" Width="800">
+    <Window.Resources>
+        <converters:TimeConverter x:Key="TimeConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.Column="0">
+            <TabItem>
+                <TabItem.Header>
+                    <Label Content="Сделки" FontSize="24"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ListView ItemsSource="{Binding Trades}" ScrollViewer.CanContentScroll="False" BorderThickness="0">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Focusable" Value="false"/>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <userControls:TradeAsListViewItemControl DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label Content="Заказы" FontSize="24"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ListView ItemsSource="{Binding Orders}" ScrollViewer.CanContentScroll="False" BorderThickness="0">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Focusable" Value="false"/>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <userControls:OrderAsListViewItemControl DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label Content="Хранилище" FontSize="24"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <userControls:ResourcesAmountsControl DataContext="{Binding PlayerData.Storage.CurrentAmounts}"/>
+                            <DockPanel>
+                                <Label Content="Заполненность:" FontSize="16"/>
+                                <Label Content="{Binding PlayerData.Storage.CurrentTotalAmount}" FontWeight="Bold" FontSize="16"/>
+                                <Label Content="/" FontWeight="Bold" FontSize="16"/>
+                                <Label Content="{Binding PlayerData.Storage.MaximumAmount}" FontWeight="Bold" FontSize="16"/>
+                            </DockPanel>
+                            <Separator/>
+                            <Label Content="Улучшение хранилища" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <DockPanel>
+                                <Label Content="Цена:" FontSize="16"/>
+                                <Label Content="{Binding PlayerData.Storage.UpgradeCost}" FontSize="16" FontWeight="Bold"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <Label Content="Прибавка к вместительности:" FontSize="16"/>
+                                <Label Content="{Binding GameConfig.StorageAmountForLevel}" FontSize="16" FontWeight="Bold"/>
+                            </DockPanel>
+                            <Button Content="Улучшить хранилище" Width="200" FontSize="16" Command="{Binding UpgradeStorageCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <DockPanel>
+                        <Label Content="Аукцион" FontSize="24"/>
+                        <Label Content="{Binding TimeToAuction, Converter={StaticResource TimeConverter}}" FontSize="24"/>
+                    </DockPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Grid ShowGridLines="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="5*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Обьемы поставки на следующий аукцион:"/>
+                                    <userControls:ResourcesAmountsControl DataContext="{Binding AuctionAmounts}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" >
+                                    <Label Content="Ваши взносы:"/>
+                                    <userControls:ResourcesAmountsEditableControl DataContext="{Binding AuctionVM.MyAuctionPayments}" x:Name="auctionStuff"/>
+                                </StackPanel>
+                            </Grid>
+                            <Button Content="Обновить размеры взносов" FontSize="16" Command="{Binding AuctionVM.UpdatePayments}" Width="400"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label Content="Создать сделку" FontSize="24"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <userControls:CreateDealControl DataContext="{Binding TradeVM}"/>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+        <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3"
+                      HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" >
+                <Label Content="{Binding Player.Name}" HorizontalAlignment="Center" FontSize="24"/>
+                <Label Content="Деньги:"/>
+                <Label Content="{Binding PlayerData.Money}" FontWeight="Bold" FontSize="36"/>
+            </StackPanel>
+            <ListView Grid.Row="1" Margin="1" ItemsSource="{Binding Logs}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Label Content="{Binding Key, Converter={StaticResource TimeConverter}}"/>
+                            <Label Content="{Binding Value}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Grid.Row="2" Content="{Binding CurrentTick, Converter={StaticResource TimeConverter}}" FontWeight="Bold" FontSize="64" HorizontalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>
